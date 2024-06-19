@@ -1,0 +1,29 @@
+{
+    "vendorId": "0x68A8",
+    "productId": "0x1688",
+    "name": "JR Pad 16E4",
+	"matrix": {
+		"rows": 1,
+		"cols": 16
+	},
+	"menus": ["qmk_rgb_matrix"],
+    "keycodes": [
+        "qmk_lighting"
+    ],
+    "customKeycodes": [
+      {"name": "Layer -", "title": "Change to Previous Layer", "shortName": "CUSTOM(0)"},
+      {"name": "Layer +", "title": "Change to Next Layer", "shortName": "CUSTOM(1)"}
+    ],
+    "layouts": {
+        "keymap": [
+            [                             "0,0", {"x": 0.25}, "0,1", {"x": 0.25}, "0,2",  {"x": 0.25, "c": "#aaaaaa"}, "0,3" ],
+            [{"y": 0.25, "c": "#cccccc"}, "0,4", {"x": 0.25}, "0,5", {"x": 0.25}, "0,6",  {"x": 0.25, "c": "#777777"}, "0,7" ],
+            [{"y": 0.25, "c": "#cccccc"}, "0,8", {"x": 0.25}, "0,9", {"x": 0.25}, "0,10", {"x": 0.25, "c": "#777777"}, "0,11"],
+
+            [{"x":5.25,  "y":-3.50, "c": "#aaaaaa"    }, "0,12\n\n\n\n\n\n\n\n\ne0",
+             {"x":0.50                                }, "0,13\n\n\n\n\n\n\n\n\ne1"],
+            [{"x":5.25,  "y": 0,   "h": 2.5, "w": 2.5 }, "0,14\n\n\n\n\n\n\n\n\ne2"],
+            [{"x":5.0,   "y": 1.5, "h": 3,   "w": 3   }, "0,15\n\n\n\n\n\n\n\n\ne3"]
+        ]
+    }
+}
