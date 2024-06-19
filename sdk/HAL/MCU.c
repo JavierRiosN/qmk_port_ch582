@@ -188,12 +188,13 @@ tmosEvents HAL_ProcessEvent(tmosTaskID task_id, tmosEvents events)
     }
     if(events & HAL_REG_INIT_EVENT)
     {
-        uint8_t x32Kpw;
 #if(defined BLE_CALIBRATION_ENABLE) && (BLE_CALIBRATION_ENABLE == TRUE) // 校准任务，单次校准耗时小于10ms
         BLE_RegInit();                                                  // 校准RF
 #if(CLK_OSC32K)
         Lib_Calibration_LSI(); // 校准内部RC
 #else
+        uint8_t x32Kpw;
+
         x32Kpw = (R8_XT32K_TUNE & 0xfc) | 0x01;
         sys_safe_access_enable();
         R8_XT32K_TUNE = x32Kpw; // LSE驱动电流降低到额定电流

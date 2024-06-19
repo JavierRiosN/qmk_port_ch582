@@ -8,7 +8,7 @@
 #endif
 
 #define BYTES_FOR_LED_BYTE 4
-#ifdef RGBW
+#ifdef WS2812_RGBW
 #define WS2812_CHANNELS 4
 #else
 #define WS2812_CHANNELS 3
@@ -19,9 +19,9 @@
 #define PREAMBLE_SIZE 4
 
 __attribute__((aligned(4))) static uint8_t txbuf[PREAMBLE_SIZE + DATA_SIZE + RESET_SIZE] = { 0 };
-static volatile bool ws2812_inited = false, spi_transfering = false;
+static volatile bool spi_transfering = false;
 
-static void ws2812_init()
+void ws2812_init()
 {
     // we have only one spi controller
     gpio_set_pin_output(WS2812_DI_PIN);
@@ -37,7 +37,6 @@ static void ws2812_init()
     R8_SPI0_CTRL_CFG |= RB_SPI_AUTO_IF;
     R8_SPI0_CTRL_CFG &= ~RB_SPI_DMA_ENABLE;
     PFIC_EnableIRQ(SPI0_IRQn);
-    ws2812_inited = true;
 }
 
 __INTERRUPT __HIGH_CODE void SPI0_IRQHandler()
@@ -126,7 +125,7 @@ static void set_led_color_rgb(rgb_led_t color, int pos)
     for (int j = 0; j < 4; j++)
         tx_start[BYTES_FOR_LED * pos + BYTES_FOR_LED_BYTE * 2 + j] = get_protocol_eq(color.r, j);
 #endif
-#ifdef RGBW
+#ifdef WS2812_RGBW
     for (int j = 0; j < 4; j++)
         tx_start[BYTES_FOR_LED * pos + BYTES_FOR_LED_BYTE * 4 + j] = get_protocol_eq(color.w, j);
 #endif
@@ -134,9 +133,6 @@ static void set_led_color_rgb(rgb_led_t color, int pos)
 
 void ws2812_setleds(rgb_led_t *ledarray, uint16_t leds)
 {
-    if (!ws2812_inited) {
-        ws2812_init();
-    }
     if (!ws2812_power_get()) {
         ws2812_power_toggle(true);
     }

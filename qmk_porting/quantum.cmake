@@ -17,6 +17,7 @@
 include_sub_directories_recursively(${QMK_BASE_DIR}/quantum)
 
 include_directories(${QMK_BASE_DIR})
+include_directories(${QMK_BASE_DIR}/platforms)
 
 file(GLOB_RECURSE quantum_SOURCES
 

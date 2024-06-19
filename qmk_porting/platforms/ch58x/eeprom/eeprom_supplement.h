@@ -1,5 +1,5 @@
 /*
-Copyright 2022 Huckies <https://github.com/Huckies>
+Copyright 2024 Huckies <https://github.com/Huckies>
                zhaqian <https://github.com/zhaqian12>
 
 This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
+
+// Start address of eeprom for qmk
+#ifndef QMK_EEPROM_START_POSITION
+#define QMK_EEPROM_START_POSITION 0x0000
+#endif
 
 #ifndef EEPROM_PAGE_SIZE
 #define EEPROM_PAGE_SIZE 0x100 // 256bytes

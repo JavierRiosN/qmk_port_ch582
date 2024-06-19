@@ -87,8 +87,9 @@ bool dip_switch_update_kb(uint8_t index, bool active)
 int main()
 {
     extern void protocol_setup();
-    extern void protocol_init();
-    extern void protocol_task();
+    extern void protocol_pre_init();
+    extern void protocol_post_init();
+    extern void platform_run();
 
     platform_setup();
 
@@ -97,11 +98,13 @@ int main()
     keyboard_setup();
 #endif
 
-    protocol_init();
+    protocol_pre_init();
+    keyboard_init();
+    protocol_post_init();
 
     /* Main loop */
     for (;;) {
-        protocol_task();
+        platform_run();
         //! housekeeping_task() is handled by platform
     }
 }

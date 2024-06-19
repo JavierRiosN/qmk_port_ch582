@@ -381,3 +381,7 @@ enum {
 #ifdef RGB_MATRIX_ENABLE
 #include "rgb_matrix/post_config.h"
 #endif
+
+#ifdef EEPROM_ENABLE
+#include "eeprom_supplement.h"
+#endif

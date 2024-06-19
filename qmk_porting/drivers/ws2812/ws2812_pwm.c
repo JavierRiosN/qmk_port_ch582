@@ -4,7 +4,7 @@
 
 /* Adapted from https://github.com/joewa/WS2812-LED-Driver_ChibiOS/ */
 
-#ifdef RGBW
+#ifdef WS2812_RGBW
 #define WS2812_CHANNELS 4
 #else
 #define WS2812_CHANNELS 3
@@ -14,8 +14,6 @@
 #define WS2812_PWM_DRIVER 1 // TMR1
 #define WS2812_DI_PIN     A10
 #endif
-
-static volatile bool ws2812_inited = false;
 
 #if WS2812_PWM_DRIVER == 1
 #define WS2812_PWM_CNT_END_REG R32_TMR1_CNT_END
@@ -238,7 +236,7 @@ __INTERRUPT __HIGH_CODE void TMR2_IRQHandler()
 #define WS2812_BLUE_BIT(led, bit)  WS2812_BIT((led), 0, (bit))
 #endif
 
-#ifdef RGBW
+#ifdef WS2812_RGBW
 /**
  * @brief   Determine the index in @ref ws2812_frame_buffer "the frame buffer" of a given white bit
  *
@@ -263,7 +261,7 @@ the memory (while the DMA is reading/writing from/to a buffer, the application c
 write/read to/from the other buffer).
  */
 
-static void ws2812_init(void)
+void ws2812_init(void)
 {
     // Initialize led frame buffer
     uint32_t i;
@@ -279,7 +277,6 @@ static void ws2812_init(void)
     WS2812_DMA_CONFIG(ENABLE, ws2812_frame_buffer[0], ws2812_frame_buffer[WS2812_BIT_N + 1]);
     WS2812_PWM_INIT(High_Level);
     WS2812_PWM_DMA_INTERRUPT_ENABLE;
-    ws2812_inited = true;
 }
 
 static void ws2812_write_led(uint16_t led_number, uint8_t r, uint8_t g, uint8_t b, uint8_t w)
@@ -303,7 +300,7 @@ static void ws2812_write_led(uint16_t led_number, uint8_t r, uint8_t g, uint8_t 
         ws2812_frame_buffer[WS2812_RED_BIT(led_number, bit)] = ((r >> bit) & 0x01) ? WS2812_DUTYCYCLE_1 : WS2812_DUTYCYCLE_0;
         ws2812_frame_buffer[WS2812_GREEN_BIT(led_number, bit)] = ((g >> bit) & 0x01) ? WS2812_DUTYCYCLE_1 : WS2812_DUTYCYCLE_0;
         ws2812_frame_buffer[WS2812_BLUE_BIT(led_number, bit)] = ((b >> bit) & 0x01) ? WS2812_DUTYCYCLE_1 : WS2812_DUTYCYCLE_0;
-#ifdef RGBW
+#ifdef WS2812_RGBW
         ws2812_frame_buffer[WS2812_WHITE_BIT(led_number, bit)] = ((w >> bit) & 0x01) ? WS2812_DUTYCYCLE_1 : WS2812_DUTYCYCLE_0;
 #endif
     }
@@ -312,15 +309,12 @@ static void ws2812_write_led(uint16_t led_number, uint8_t r, uint8_t g, uint8_t 
 // Setleds for standard RGB
 void ws2812_setleds(rgb_led_t *ledarray, uint16_t leds)
 {
-    if (!ws2812_inited) {
-        ws2812_init();
-    }
     if (!ws2812_power_get()) {
         ws2812_power_toggle(true);
     }
 
     for (uint16_t i = 0; i < leds; i++) {
-#ifdef RGBW
+#ifdef WS2812_RGBW
         ws2812_write_led(i, ledarray[i].r, ledarray[i].g, ledarray[i].b, ledarray[i].w);
 #else
         ws2812_write_led(i, ledarray[i].r, ledarray[i].g, ledarray[i].b, 0);

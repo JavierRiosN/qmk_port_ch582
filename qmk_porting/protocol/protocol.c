@@ -195,11 +195,25 @@ void protocol_post_init()
     ch582_toggle_qmk_protocol(true);
 }
 
-__HIGH_CODE void protocol_task()
+void protocol_pre_task()
+{
+    if (ch582_interface.ch582_protocol_pre_task) {
+        ch582_interface.ch582_protocol_pre_task();
+    }
+}
+
+void protocol_post_task()
+{
+    if (ch582_interface.ch582_protocol_post_task) {
+        ch582_interface.ch582_protocol_post_task();
+    }
+}
+
+__HIGH_CODE void platform_run()
 {
     for (;;) {
-        if (ch582_interface.ch582_protocol_task) {
-            ch582_interface.ch582_protocol_task();
+        if (ch582_interface.ch582_platform_run) {
+            ch582_interface.ch582_platform_run();
         }
     }
 }

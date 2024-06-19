@@ -111,7 +111,15 @@ static void platform_reboot()
     SYS_ResetExecute();
 }
 
-__HIGH_CODE static void protocol_task()
+static void protocol_pre_task()
+{
+}
+
+static void protocol_post_task()
+{
+}
+
+__HIGH_CODE static void platform_run()
 {
     TMOS_SystemProcess();
 }
@@ -135,6 +143,8 @@ const ch582_interface_t ch582_protocol_usb = {
     .ch582_platform_initialize = platform_initialize,
     .ch582_protocol_setup = protocol_setup,
     .ch582_protocol_init = protocol_init,
-    .ch582_protocol_task = protocol_task,
+    .ch582_protocol_pre_task = protocol_pre_task,
+    .ch582_protocol_post_task = protocol_post_task,
+    .ch582_platform_run = platform_run,
     .ch582_platform_reboot = platform_reboot,
 };

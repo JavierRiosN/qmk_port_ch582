@@ -48,7 +48,9 @@ typedef struct _ch582_interface_t {
     ch582_driver_t ch582_platform_initialize;
     ch582_driver_t ch582_protocol_setup;
     ch582_driver_t ch582_protocol_init; // hardware interface initialization
-    ch582_driver_t ch582_protocol_task;
+    ch582_driver_t ch582_protocol_pre_task;
+    ch582_driver_t ch582_protocol_post_task;
+    ch582_driver_t ch582_platform_run;
     ch582_driver_t ch582_platform_reboot;
 } ch582_interface_t;
 

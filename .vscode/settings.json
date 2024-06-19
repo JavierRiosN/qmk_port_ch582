@@ -135,7 +135,7 @@
         "programmable_button.h": "c",
         "action_util.h": "c",
         "usb_hid.h": "c",
-        "functional": "c"
+        "protocol_supplement.h": "c"
     },
     "cmake.configureOnOpen": false,
     "git.ignoreLimitWarning": true,
